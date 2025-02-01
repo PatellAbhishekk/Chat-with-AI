@@ -1,6 +1,5 @@
 import { useState } from "react";
 import axios from "axios";
-import { motion } from "framer-motion";
 import ChatBox from "./ChatBox";
 
 function App() {
@@ -11,14 +10,14 @@ function App() {
     setAnswer("Generating response...");
     try {
       const response = await axios.post(
-        "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=API_KEY",
+        `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${process.env.REACT_APP_SECRET_KEY}`,
         {
           contents: [{ parts: [{ text: question }] }],
         }
       );
       setAnswer(response.data.candidates[0].content.parts[0].text);
     } catch (error) {
-      setAnswer("Failed to generate response. Please try again.");
+      setAnswer("Oops! Something went wrong. Please try again later.");
     }
   }
 

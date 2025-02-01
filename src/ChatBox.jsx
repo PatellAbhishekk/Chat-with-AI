@@ -9,7 +9,7 @@ function ChatBox({ question, setQuestion, answer, GenerateAnswer }) {
       transition={{ duration: 0.5 }}
       className="w-full max-w-2xl bg-gray-800 shadow-xl rounded-2xl p-6 text-white flex flex-col"
     >
-      <h1 className="text-3xl font-bold text-center mb-4">AI Chat Assistant</h1>
+      <h1 className="text-3xl font-bold text-center mb-4">Chat With AI</h1>
       <div className="flex flex-col space-y-4">
         <textarea
           value={question}
@@ -29,9 +29,11 @@ function ChatBox({ question, setQuestion, answer, GenerateAnswer }) {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.2 }}
-          className="mt-4 p-4 bg-gray-700 border border-gray-600 rounded-xl text-white whitespace-pre-wrap text-left"
+          className={`mt-4 p-4 bg-gray-700 border border-gray-600 rounded-xl whitespace-pre-wrap text-left ${
+            answer.includes("Oops") ? "text-red-500" : "text-white"
+          }`}
         >
-          {answer || "Your response will appear here..."}
+          {answer}
         </motion.div>
       </div>
     </motion.div>
