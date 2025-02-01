@@ -1,31 +1,36 @@
 import { useState } from "react";
-import "./App.css";
 import axios from "axios";
+import { motion } from "framer-motion";
+import ChatBox from "./ChatBox";
 
 function App() {
-  const [qeustion, setQuestion] = useState("");
+  const [question, setQuestion] = useState("");
   const [answer, setAnswer] = useState("");
 
   async function GenerateAnswer() {
-    console.log("loading..");
-    const response = await axios({
-      method: "POST",
-      url: "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=AIzaSyBSqrvbA94-UhGjLPiCLAjE_SMYmWd7eqU",
-      data: {
-        contents: [{ parts: [{ text: qeustion }] }],
-      },
-    });
-    console.log(response.data.candidates[0].content.parts[0].text);
+    setAnswer("Generating response...");
+    try {
+      const response = await axios.post(
+        "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=API_KEY",
+        {
+          contents: [{ parts: [{ text: question }] }],
+        }
+      );
+      setAnswer(response.data.candidates[0].content.parts[0].text);
+    } catch (error) {
+      setAnswer("Failed to generate response. Please try again.");
+    }
   }
+
   return (
-    <>
-      <h1>Chat with AI</h1>
-      <textarea
-        value={qeustion}
-        onChange={(e) => setQuestion(e.target.value)}
-      ></textarea>
-      <button onClick={GenerateAnswer}>Generate Answer</button>
-    </>
+    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-900 text-white p-4">
+      <ChatBox
+        question={question}
+        setQuestion={setQuestion}
+        answer={answer}
+        GenerateAnswer={GenerateAnswer}
+      />
+    </div>
   );
 }
 
